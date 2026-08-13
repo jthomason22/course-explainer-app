@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a Flask-based web application that displays course information. The application uses a simple MVC-style architecture with Flask handling routing, view functions rendering templates, and a Course model managing course data. This is currently a minimal starter template (branch `starter-template`) — only an index page and a course detail page exist.
+This is a Flask-based web application that displays course information. The application uses a simple MVC-style architecture with Flask handling routing, view functions rendering templates, and a Course model managing course data. This is currently a minimal starter template (branch `starter-template-jt`) — only an index page and a course detail page exist.
 
 ## Development Environment
 
@@ -21,7 +21,11 @@ source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
+# or, per README.md:
+uv pip install -r requirements.txt
 ```
+
+Dependencies (`requirements.txt`): Flask, gunicorn (production WSGI server, not used by `python src/app.py`), python-dotenv (for `.env`, not currently read anywhere in `src/`).
 
 ### Running the Application
 
@@ -49,7 +53,7 @@ python -m unittest tests.test_app.AppTestCase.test_index
 ### Application Structure
 
 - **src/app.py**: Application entry point and Flask configuration. Routes are registered using `add_url_rule()` rather than `@app.route()` decorators, which keeps view functions decoupled from Flask and importable on their own.
-- **src/views.py**: View functions that handle HTTP requests and return rendered templates. Views only import `render_template` from Flask — no other Flask APIs are used yet.
+- **src/views.py**: View functions that handle HTTP requests and return rendered templates. The `course` view looks up a `Course` by treating `course_id` as a 1-based index into `models.courses` (`courses[int(course_id) - 1]`) — there is no bounds/type checking, so a non-numeric or out-of-range `course_id` raises an unhandled exception rather than a 404.
 - **src/models.py**: Data models — in-memory `Course` objects stored in a plain list (`courses`). No database backend; all course data is hardcoded.
 - **src/templates/**: Jinja2 HTML templates with inheritance (`layout.html` is the base; `index.html` and `course.html` extend it via `{% block content %}`).
 - **src/static/css/**: CSS stylesheets for the application.
@@ -57,7 +61,7 @@ python -m unittest tests.test_app.AppTestCase.test_index
 ### Routes
 
 - `/` (`index`) — renders `index.html` (course listing).
-- `/course/<course_id>` (`course`) — passes `course_id` straight through to the template as-is; the view does **not** look up a `Course` object, index into `courses`, convert to int, or handle out-of-range values. Any lookup/validation logic will need to be added.
+- `/course/<course_id>` (`course`) — looks up `courses[int(course_id) - 1]` and renders `course.html` with that `Course` object. `course_id` is 1-based (matching the `Course 1`/`2`/`3` links in `index.html`, which are 0-indexed in the underlying list).
 
 ### Data Model
 
