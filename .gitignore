@@ -211,3 +211,6 @@ __marimo__/
 *.adoc
 /docs/toolkit
 /log-analysis
+.toolkit-metadata
+/logs
+toolkit.conf
