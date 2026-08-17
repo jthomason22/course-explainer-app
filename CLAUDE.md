@@ -73,6 +73,9 @@ python -m unittest tests.test_app.AppTestCase.test_index
 - Virtual environment (`venv/`) should not be committed to version control.
 - `src/app.py` imports `views` with a bare `from views import ...`, so the app must be run as `python src/app.py` (or with `src/` on `sys.path`) rather than as a package from the repo root — see how `tests/test_app.py` inserts `src/` into `sys.path` before importing `app`.
 
+## CLAUDE.md Maintenance
+This file drifts. When running /init on an existing CLAUDE.md, verify every claim against the actual source files and explicitly list any stale or inaccurate lines you removed rather than silently rewriting.
+
 ## Unrelated Repo Contents
 
 The repository root also contains tooling unrelated to the Flask app itself — don't treat these as part of the application architecture:
