@@ -76,6 +76,25 @@ python -m unittest tests.test_app.AppTestCase.test_index
 ## CLAUDE.md Maintenance
 This file drifts. When running /init on an existing CLAUDE.md, verify every claim against the actual source files and explicitly list any stale or inaccurate lines you removed rather than silently rewriting.
 
+## Development Worflow
+
+### Add Unit Tests
+
+Whenever you add any changes add unit tests and run and make sure the tests passes.
+
+### Verify changes with Playwright (MANDATORY)
+
+**After implementing any new feature, you MUST:**
+
+1. Start the Flask application (if not already running - `python3 src/app.py`)
+2. Use the Playwright MCP tool to connect to the application at `http://127.0.0.1:5000`
+3. Navigate to and interect with the new feature to verfiy it works correctly
+4. Take a screenshot of the working feature
+5. Save the screenshot in the `test-output/` folder with a descriptive filename (`feature-name-YYYY-DD-MM.png`)
+
+This step ensures that all features are visually verfied and provides documentation
+of the workign state of the application
+
 ## Unrelated Repo Contents
 
 The repository root also contains tooling unrelated to the Flask app itself — don't treat these as part of the application architecture:
