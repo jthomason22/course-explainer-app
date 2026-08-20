@@ -216,3 +216,5 @@ __marimo__/
 .toolkit-metadata
 /logs
 toolkit.conf
+/.playwright-mcp
+/test-output

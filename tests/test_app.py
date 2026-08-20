@@ -16,11 +16,21 @@ class AppTestCase(unittest.TestCase):
         response = self.app.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Welcome to the Course Explainer', response.data)
+        self.assertIn(b'Introduction to Python', response.data)
+        self.assertIn(b'Introduction to Go', response.data)
 
     def test_course(self):
         response = self.app.get('/course/1')
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'Course Details', response.data)
+        self.assertIn(b'Topics Covered', response.data)
+        self.assertIn(b'Variables and data types', response.data)
+
+    def test_course_golang(self):
+        response = self.app.get('/course/4')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'Introduction to Go', response.data)
+        self.assertIn(b'Goroutines and channels', response.data)
 
 if __name__ == '__main__':
     unittest.main()
