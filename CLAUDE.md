@@ -60,13 +60,13 @@ python -m unittest tests.test_app.AppTestCase.test_index
 
 ### Routes
 
-- `/` (`index`) — renders `index.html` (course listing).
-- `/course/<course_id>` (`course`) — looks up `courses[int(course_id) - 1]` and renders `course.html` with that `Course` object. `course_id` is 1-based (matching the `Course 1`/`2`/`3` links in `index.html`, which are 0-indexed in the underlying list).
+- `/` (`index`) — renders `index.html` (course listing). Course links are generated dynamically via `{% for course in courses %}` with `loop.index` as the 1-based `course_id`, not hardcoded.
+- `/course/<course_id>` (`course`) — looks up `courses[int(course_id) - 1]` and renders `course.html` with that `Course` object. `course_id` is 1-based (matching `loop.index` in `index.html`), while the underlying list is 0-indexed.
 
 ### Data Model
 
-- `Course` (src/models.py): plain class with `title`, `description`, `instructor`, `duration`.
-- `courses` is a hardcoded list of 3 `Course` instances. To add a course, append to this list — there is no persistence layer.
+- `Course` (src/models.py): plain class with `title`, `description`, `instructor`, `duration`, `topics` (a list, defaults to `[]` if omitted). `course.html` renders `topics` as a bulleted list under "Topics Covered".
+- `courses` is a hardcoded list of 4 `Course` instances (Python, Flask, Data Science, Go), each with 5 topics. To add a course, append to this list — there is no persistence layer.
 
 ## Important Notes
 
@@ -93,7 +93,7 @@ Whenever you add any changes add unit tests and run and make sure the tests pass
 5. Save the screenshot in the `test-output/` folder with a descriptive filename (`feature-name-YYYY-DD-MM.png`)
 
 This step ensures that all features are visually verfied and provides documentation
-of the workign state of the application
+of the working state of the application.
 
 ## Unrelated Repo Contents
 
